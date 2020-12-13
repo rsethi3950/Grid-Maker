@@ -1,0 +1,89 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Project</title>
+
+    <link rel="stylesheet" type="text/css" media="all" href="{{url_for('static',filename='vendor/mdi-font/css/material-design-iconic-font.min.css')}}">
+    
+    <link rel="stylesheet" type="text/css" media="all" href="{{url_for('static',filename='vendor/font-awesome-4.7/css/font-awesome.min.css')}}">
+    <!-- Font special for pages-->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Vendor CSS-->
+    <link rel="stylesheet" type="text/css" media="all" href="{{url_for('static',filename='vendor/select2/select2.min.css')}}">
+   
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/main.css')}}">
+</head>
+<body style="color: white">
+	<div class="page-wrapper bg-gra-01 p-t-180 p-b-100 font-poppins">
+        <div class="wrapper wrapper--w780">
+            <div class="card card-3">
+                <div class="card-heading"></div>
+                <div class="card-body">
+                    <h2 class="title">Upload Photo</h2>
+                    {% for message in form.email.errors %}
+                    	{% print(message) %}
+						<div>{{message}}</div>
+					{% endfor %}
+					{% for message in form.photo.errors %}
+						{% print(message) %}
+						<div><i>{{message}}</i></div>
+					{% endfor %}
+
+					
+                    <form action = "http://localhost:5000/uploader" method = "POST" enctype = "multipart/form-data">
+                    	{{ form.hidden_tag() }}
+                        <div class="input-group" >
+                        	{{form.email.label}}<br>
+					     	{{form.email}}
+					     	<br>
+                        </div>
+                        <div class="input-group">
+                        	{{form.photo.label}}<br>
+					     	{{form.photo}}
+					     	<br>
+                          
+                        </div>
+                        <div class="input-group">
+                            <div class="rs-select2 js-select-simple select--no-search">
+                            	{{form.color.label}}<br>
+						     	{{form.color}}
+						     	<br>
+                                
+                                <div class="select-dropdown"></div>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <div class="rs-select2 js-select-simple select--no-search">
+                            	{{form.gridWidth.label}}<br>
+						     	{{form.gridWidth}}
+						     	<br>
+                                
+                                <div class="select-dropdown"></div>
+                            </div>
+                        </div>
+                        <div class="input-group" >
+                        	<br>
+					     	{{form.select.label}} 
+					     	<table>	
+					     	{% for subfield in form.select %}
+							<tr>
+								<td style="width:50%">{{ subfield.label }}</td>
+							    <td style="width:50%">{{ subfield }}</td>
+							</tr>
+							{% endfor %}
+					     	</table>
+                        </div>
+                        <div class="p-t-10">
+                        	<br>
+                            <button class="btn btn--pill btn--green" type="submit">{{form.submit}}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+	
+</body>
+</html>

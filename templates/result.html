@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='upload.css')}}">
+</head>
+<body>
+
+	<h1>{{email}}</h1>
+	<h1>{{dest}}</h1>
+	
+	
+	<img src="{{url_for('static', filename='uploads/' + dest)}}" width="500" height="500">
+	<h4>File uploaded successfully</h4>
+
+	<h2>Review Form</h2>
+	<br>
+	<form action="http://localhost:5000/display/{{email}}/{{dest}}" method="POST">
+		{{reviewform.hidden_tag()}}
+		<fieldset>
+			<legend>Review Form</legend>
+			<div class="input-group">
+				{{reviewform.select.label}}
+				<table>
+					{% for subfield in reviewform.select %}
+					<tr>
+						<td>{{subfield}}</td>
+						<td>{{subfield.label}}</td>
+					</tr>
+					{% endfor %}
+				</table>
+			</div>
+			<div class="input-group">
+				{{reviewform.rate.label}}
+				<table>
+					{% for subfield in reviewform.rate %}
+					<tr>
+						<td>{{subfield}}</td>
+						<td>{{subfield.label}}</td>
+					</tr>
+					{% endfor %}
+				</table>
+			</div>
+			{{reviewform.submit}}
+			<div>
+			</div>
+		</fieldset>
+		
+	</form>
+	{% if reviewform.select.data=="Y": %}
+	msg= Message('Hello', sender = 'riyasethi941@gmail.com', recipients = ['riyasethi941@gmail.com'])
+	msg.body= 'Testing mail'
+	with app.open_resource("art.jpeg") as fp:
+		msg.attach("art.jpeg","image/png",fp.read())
+	mail.send(msg)
+	return 'Sent'
+	{%endif%}
+
+
+	
+</body>
+</html>
