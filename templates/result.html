@@ -11,10 +11,9 @@
 	
 	<img src="{{url_for('static', filename='uploads/' + dest)}}" width="500" height="500">
 	<h4>File uploaded successfully</h4>
-
 	<h2>Review Form</h2>
 	<br>
-	<form action="http://localhost:5000/display?email={{email}}&dest={{dest}}" method="POST">
+	<form action="http://localhost:5000/display?email={{email}}&dest={{dest}}" method="POST" enctype = "multipart/form-data">
 		{{reviewform.hidden_tag()}}
 		<fieldset>
 			<legend>Review Form</legend>
@@ -45,7 +44,14 @@
 			</div>
 		</fieldset>
 	</form>
-
+	<h1>{{reviewform.select.data}}<h1>
+	<h1>{{reviewform.select.label}}<h1>
+	{% for subfield in reviewform.select %}
+		<tr>
+			<td>{{subfield.data}}</td>
+			
+		</tr>
+	{% endfor %}
 
 	
 </body>

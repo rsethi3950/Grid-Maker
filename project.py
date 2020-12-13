@@ -63,8 +63,15 @@ def display():
 	reviewform=ReviewForm()
 	print(request.args.get('email'))
 	print(request.args.get('dest'))
-	send_email(request.args.get('email'),request.args.get('dest'))
-	return render_template('result.html', email=request.args.get('email'), dest=request.args.get('dest'), reviewform=reviewform)
+	if(request.method == "POST"):
+		if(reviewform.select.data=="Y"):
+			send_email(request.args.get('email'),request.args.get('dest'))
+			return 'Sent'
+		return 'Thankyou for visiting!'
+	if(request.method == "GET"):	
+		if(request.args.get('select')=="Y"):
+			send_email(request.args.get('email'),request.args.get('dest'))
+	return render_template('result.html', email=request.args.get('email'), dest=request.args.get('dest'), select=request.args.get('select'), reviewform=reviewform)
 
 @app.route('/uploader', methods=["POST","GET"])
 def upload_file():
@@ -89,7 +96,7 @@ def upload_file():
 				
 				if form.select.data=="Y":
 					send_email(form.email.data,f.filename)
-				return redirect(url_for('display', email=form.email.data, dest=f.filename))
+				return redirect(url_for('display', email=form.email.data, select=form.select.data, dest=f.filename))
 					# print(form.email.data)
 				# 	msg= Message('Hello', sender = 'riyasethi941@gmail.com', recipients = [form.email.data])
 				# 	msg.body= 'Testing mail'
