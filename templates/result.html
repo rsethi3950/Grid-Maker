@@ -14,7 +14,7 @@
 
 	<h2>Review Form</h2>
 	<br>
-	<form action="http://localhost:5000/display/{{email}}/{{dest}}" method="POST">
+	<form action="http://localhost:5000/display?email={{email}}&dest={{dest}}" method="POST">
 		{{reviewform.hidden_tag()}}
 		<fieldset>
 			<legend>Review Form</legend>
@@ -44,16 +44,7 @@
 			<div>
 			</div>
 		</fieldset>
-		
 	</form>
-	{% if reviewform.select.data=="Y": %}
-	msg= Message('Hello', sender = 'riyasethi941@gmail.com', recipients = ['riyasethi941@gmail.com'])
-	msg.body= 'Testing mail'
-	with app.open_resource("art.jpeg") as fp:
-		msg.attach("art.jpeg","image/png",fp.read())
-	mail.send(msg)
-	return 'Sent'
-	{%endif%}
 
 
 	

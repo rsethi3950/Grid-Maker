@@ -40,6 +40,14 @@ class ReviewForm(FlaskForm):
 	rate= RadioField("Rate us",choices=[("one","1"),("two","2"),("three","3"),("four","4"),("five","5")])
 	submit = SubmitField("Send")
 
+def send_email(form_data,filename):
+    # print(form.email.data)
+    msg= Message('Hello', sender = 'riyasethi941@gmail.com', recipients = [form_data])
+    msg.body= 'Testing mail'
+    with app.open_resource(os.path.join(UPLOADED_PHOTOS_DEST,filename)) as fp:
+        msg.attach(filename,"image/png",fp.read())
+        mail.send(msg)
+        print ('Sent')
 # No caching at all for API endpoints.
 @app.after_request
 def add_header(response):
@@ -55,6 +63,7 @@ def display():
 	reviewform=ReviewForm()
 	print(request.args.get('email'))
 	print(request.args.get('dest'))
+	send_email(request.args.get('email'),request.args.get('dest'))
 	return render_template('result.html', email=request.args.get('email'), dest=request.args.get('dest'), reviewform=reviewform)
 
 @app.route('/uploader', methods=["POST","GET"])
@@ -79,14 +88,16 @@ def upload_file():
 				grid.makeGrid(gap=dict(width_choices).get(form.gridWidth.data), color=dict(color_choices).get(form.color.data), filename=f.filename)
 				
 				if form.select.data=="Y":
-					# print(form.email.data)
-					msg= Message('Hello', sender = 'riyasethi941@gmail.com', recipients = [form.email.data])
-					msg.body= 'Testing mail'
-					with app.open_resource(os.path.join(UPLOADED_PHOTOS_DEST,f.filename)) as fp:
-						msg.attach(f.filename,"image/png",fp.read())
-					mail.send(msg)
-					print ('Sent')
+					send_email(form.email.data,f.filename)
 				return redirect(url_for('display', email=form.email.data, dest=f.filename))
+					# print(form.email.data)
+				# 	msg= Message('Hello', sender = 'riyasethi941@gmail.com', recipients = [form.email.data])
+				# 	msg.body= 'Testing mail'
+				# 	with app.open_resource(os.path.join(UPLOADED_PHOTOS_DEST,f.filename)) as fp:
+				# 		msg.attach(f.filename,"image/png",fp.read())
+				# 	mail.send(msg)
+				# 	print ('Sent')
+				# return redirect(url_for('display', email=form.email.data, dest=f.filename))
 				# return render_template('result.html', form=form, dest=f.filename)
 		flash('All fields are required.')
 		print(form.select.label)
@@ -97,6 +108,10 @@ def upload_file():
 			
 	else:
 		return render_template('upload.html',form=form)
+
+
+
+        
 
 if __name__ == '__main__':
    app.run(debug=True)
