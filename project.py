@@ -68,9 +68,8 @@ def display():
 			send_email(request.args.get('email'),request.args.get('dest'))
 			return 'Sent'
 		return 'Thankyou for visiting!'
-	if(request.method == "GET"):	
-		if(request.args.get('select')=="Y"):
-			send_email(request.args.get('email'),request.args.get('dest'))
+	if(request.args.get('select')=="Y"):
+		send_email(request.args.get('email'),request.args.get('dest'))
 	return render_template('result.html', email=request.args.get('email'), dest=request.args.get('dest'), select=request.args.get('select'), reviewform=reviewform)
 
 @app.route('/uploader', methods=["POST","GET"])
