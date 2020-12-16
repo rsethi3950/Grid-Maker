@@ -253,12 +253,12 @@ h6 {
 }
 
 .btn--green {
-  background: #57b846;
+  background: green;
 }
 
-.btn--green:hover {
+/*.btn--green:hover {
   background: #4dae3c;
-}
+}*/
 
 /* ==========================================================================
    #DATE PICKER
@@ -339,7 +339,7 @@ input {
   cursor: pointer;
 }
 
-.input-group {
+.form-input-group {
   position: relative;
   margin-bottom: 33px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
@@ -496,7 +496,7 @@ input {
 }
 
 .card-3 .card-heading {
-  background: url("../images/bg-heading-03.jpg") top left/cover no-repeat;
+  background: url("https://d32dm0rphc51dk.cloudfront.net/3bAjQ3KEwxi6l10UVVLumg/large.jpg") top left/cover no-repeat;
   display: table-cell;
   width: 50%;
 }
@@ -523,4 +523,68 @@ input {
     padding: 37px 30px;
     padding-bottom: 45px;
   }
+  
+  
 }
+/*SUBMIT*/
+.subm{
+      background-color: green;
+    }
+.subm:hover {
+  color: white;
+}
+    /*footer*/
+    
+    .btn{
+      padding: 15px 15px;
+    }
+    .btn-user{
+      background:  #FF1493;
+      color: white;
+      border-radius: 50%;
+    }
+
+    .btn-facebook{
+      background: #191970;
+      color: white;
+      border-radius: 50%;
+    }
+    .btn-twitter{
+      background: #55ACEE;
+      color: white;
+      border-radius: 50%;
+    }
+    .btn-linkedin{
+      background: #4169E1;
+      color: white;
+      border-radius: 50%;
+    }
+    .btn-dribbble{
+      background:#FF1493;
+      color: white;
+      border-radius: 50%;
+    }
+    .btn-mailto{
+      background: grey;
+      color: white;
+      border-radius: 50%;
+    }
+    .btn-github{
+      background: #3366FF;
+      color: white;
+      border-radius: 50%;
+    }
+    .fa:hover{
+      color: white;
+    }
+    .icons:hover{
+      color: white;
+      transform: scale(1.25);
+    }
+    .profile:hover{
+      color: black;
+    }
+    /*.profile:active{
+      background-color: white;
+    }
+*/

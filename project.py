@@ -51,7 +51,6 @@ def send_email(form_data,filename):
 # No caching at all for API endpoints.
 @app.after_request
 def add_header(response):
-    # response.cache_control.no_store = True
     response.headers['X-UA-Compatible'] = 'IE=Edge,chrome=1'
     response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0, public'
     response.headers['Pragma'] = 'no-cache'
@@ -71,6 +70,40 @@ def display():
 	if(request.args.get('select')=="Y"):
 		send_email(request.args.get('email'),request.args.get('dest'))
 	return render_template('result.html', email=request.args.get('email'), dest=request.args.get('dest'), select=request.args.get('select'), reviewform=reviewform)
+
+@app.route('/', methods=["POST","GET"])
+def upload():
+	form=ContactForm()
+	
+	if request.method == 'POST':
+		if form.validate_on_submit():
+			print(form.select)
+			for subfield in form.select:
+				print(subfield)
+				print(subfield.label)
+			
+			f = form.photo.data
+			try:
+				os.remove(os.path.join(UPLOADED_PHOTOS_DEST,secure_filename(f.filename)))
+				print('deleted file')
+			except:
+				print('new file')
+			finally:
+				f.save(os.path.join(UPLOADED_PHOTOS_DEST, secure_filename(f.filename)))
+				grid.makeGrid(gap=dict(width_choices).get(form.gridWidth.data), color=dict(color_choices).get(form.color.data), filename=f.filename)
+				
+				if form.select.data=="Y":
+					send_email(form.email.data,f.filename)
+				return redirect(url_for('display', email=form.email.data, select=form.select.data, dest=f.filename))
+		flash('All fields are required.')
+		print(form.select.label)
+		print(form.email.data)
+		print(form.photo.data.filename)
+		print(form.color.data)
+		return render_template('upload.html',form=form)
+			
+	else:
+		return render_template('upload.html',form=form)
 
 @app.route('/uploader', methods=["POST","GET"])
 def upload_file():
@@ -96,15 +129,6 @@ def upload_file():
 				if form.select.data=="Y":
 					send_email(form.email.data,f.filename)
 				return redirect(url_for('display', email=form.email.data, select=form.select.data, dest=f.filename))
-					# print(form.email.data)
-				# 	msg= Message('Hello', sender = 'riyasethi941@gmail.com', recipients = [form.email.data])
-				# 	msg.body= 'Testing mail'
-				# 	with app.open_resource(os.path.join(UPLOADED_PHOTOS_DEST,f.filename)) as fp:
-				# 		msg.attach(f.filename,"image/png",fp.read())
-				# 	mail.send(msg)
-				# 	print ('Sent')
-				# return redirect(url_for('display', email=form.email.data, dest=f.filename))
-				# return render_template('result.html', form=form, dest=f.filename)
 		flash('All fields are required.')
 		print(form.select.label)
 		print(form.email.data)
@@ -114,10 +138,6 @@ def upload_file():
 			
 	else:
 		return render_template('upload.html',form=form)
-
-
-
-        
 
 if __name__ == '__main__':
    app.run(debug=True)
