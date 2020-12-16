@@ -2,14 +2,14 @@ from flask import Flask, redirect, url_for, request, render_template, flash
 from werkzeug import secure_filename
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileRequired, FileField, FileAllowed
-from wtforms import TextField, SubmitField, SelectField, RadioField, validators, ValidationError
+from wtforms import TextField, SubmitField, SelectField, StringField, FloatField, RadioField, validators, ValidationError
 import os
 import grid
 from flask_mail import Mail, Message
+from wtforms_components import ColorField
 
 app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
-
 
 app.config['MAIL_SERVER']='smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
@@ -25,25 +25,24 @@ app.secret_key = 'development key'
 basedir = os.path.abspath(os.path.dirname(__file__))
 UPLOADED_PHOTOS_DEST = os.path.join(basedir, 'static', 'uploads')
 
-color_choices=[('1','red'),('2', 'blue'), ('3','green')]
 width_choices=[('1','large'),('2', 'medium'),('3', 'small')]
 class ContactForm(FlaskForm):
 	email = TextField("Email:",[validators.Required("Please enter your email address."),validators.Email("Please enter valid email address.")])
 	photo= FileField('Upload picture:',validators=[FileRequired(), FileAllowed(['jpg', 'png', 'jpeg'], "Only Images are allowed.")])
-	color= SelectField("grid color:",choices= color_choices)
 	gridWidth= SelectField("grid width:",choices= width_choices)
+	lineWidth= FloatField("Line width:")
 	select= RadioField("Do you want to receive mail with picture? (If you wish to preview image first press No and proceed.)",choices=[('Y',"Yes"),('N',"No")])
+	color = ColorField("Color:")
 	submit = SubmitField("Send")
-   
+	
 class ReviewForm(FlaskForm):
 	select= RadioField("Do you want to receive mail with picture now?", choices=[('Y',"Yes"),('N',"No")])
 	rate= RadioField("Rate us",choices=[("one","1"),("two","2"),("three","3"),("four","4"),("five","5")])
 	submit = SubmitField("Send")
 
 def send_email(form_data,filename):
-    # print(form.email.data)
     msg= Message('Hello', sender = 'riyasethi941@gmail.com', recipients = [form_data])
-    msg.body= 'Testing mail'
+    msg.body= 'Final Image. PFA'
     with app.open_resource(os.path.join(UPLOADED_PHOTOS_DEST,filename)) as fp:
         msg.attach(filename,"image/png",fp.read())
         mail.send(msg)
@@ -60,8 +59,6 @@ def add_header(response):
 @app.route('/display', methods=["POST", "GET"])
 def display():
 	reviewform=ReviewForm()
-	print(request.args.get('email'))
-	print(request.args.get('dest'))
 	if(request.method == "POST"):
 		if(reviewform.select.data=="Y"):
 			send_email(request.args.get('email'),request.args.get('dest'))
@@ -73,37 +70,7 @@ def display():
 
 @app.route('/', methods=["POST","GET"])
 def upload():
-	form=ContactForm()
-	
-	if request.method == 'POST':
-		if form.validate_on_submit():
-			print(form.select)
-			for subfield in form.select:
-				print(subfield)
-				print(subfield.label)
-			
-			f = form.photo.data
-			try:
-				os.remove(os.path.join(UPLOADED_PHOTOS_DEST,secure_filename(f.filename)))
-				print('deleted file')
-			except:
-				print('new file')
-			finally:
-				f.save(os.path.join(UPLOADED_PHOTOS_DEST, secure_filename(f.filename)))
-				grid.makeGrid(gap=dict(width_choices).get(form.gridWidth.data), color=dict(color_choices).get(form.color.data), filename=f.filename)
-				
-				if form.select.data=="Y":
-					send_email(form.email.data,f.filename)
-				return redirect(url_for('display', email=form.email.data, select=form.select.data, dest=f.filename))
-		flash('All fields are required.')
-		print(form.select.label)
-		print(form.email.data)
-		print(form.photo.data.filename)
-		print(form.color.data)
-		return render_template('upload.html',form=form)
-			
-	else:
-		return render_template('upload.html',form=form)
+	return redirect(url_for('upload_file'))
 
 @app.route('/uploader', methods=["POST","GET"])
 def upload_file():
@@ -111,10 +78,10 @@ def upload_file():
 	
 	if request.method == 'POST':
 		if form.validate_on_submit():
-			print(form.select)
-			for subfield in form.select:
-				print(subfield)
-				print(subfield.label)
+
+			# for subfield in form.select:
+			# 	print(subfield)
+			# 	print(subfield.label)
 			
 			f = form.photo.data
 			try:
@@ -124,16 +91,13 @@ def upload_file():
 				print('new file')
 			finally:
 				f.save(os.path.join(UPLOADED_PHOTOS_DEST, secure_filename(f.filename)))
-				grid.makeGrid(gap=dict(width_choices).get(form.gridWidth.data), color=dict(color_choices).get(form.color.data), filename=f.filename)
+				grid.makeGrid(gap=dict(width_choices).get(form.gridWidth.data), color=str(form.color.data), filename=f.filename, stroke=int(form.lineWidth.data))
 				
 				if form.select.data=="Y":
 					send_email(form.email.data,f.filename)
 				return redirect(url_for('display', email=form.email.data, select=form.select.data, dest=f.filename))
 		flash('All fields are required.')
-		print(form.select.label)
-		print(form.email.data)
-		print(form.photo.data.filename)
-		print(form.color.data)
+		
 		return render_template('upload.html',form=form)
 			
 	else:

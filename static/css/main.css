@@ -531,8 +531,8 @@ input {
       background-color: green;
     }
 .subm:hover {
-  color: white;
-}
+      color: white;
+    }
     /*footer*/
     
     .btn{
@@ -584,7 +584,4 @@ input {
     .profile:hover{
       color: black;
     }
-    /*.profile:active{
-      background-color: white;
-    }
-*/
+    

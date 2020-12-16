@@ -53,6 +53,7 @@
 					
                     <form action = "http://localhost:5000/uploader" method = "POST" enctype = "multipart/form-data">
                     	{{ form.hidden_tag() }}
+                        
                         <div class="form-input-group" >
                         	{{form.email.label}}<br>
 					     	{{form.email}}
@@ -70,7 +71,6 @@
 						     	{{form.color}}
 						     	<br>
                                 
-                                <div class="select-dropdown"></div>
                             </div>
                         </div>
                         <div class="form-input-group">
@@ -78,8 +78,15 @@
                             	{{form.gridWidth.label}}<br>
 						     	{{form.gridWidth}}
 						     	<br>
-                                
-                                <div class="select-dropdown"></div>
+                               
+                            </div>
+                        </div>
+                        <div class="form-input-group">
+                            <div class="rs-select2 js-select-simple select--no-search">
+                                {{form.lineWidth.label}}<br>
+                                {{form.lineWidth}}
+                                <br>
+                               
                             </div>
                         </div>
                         <div class="form-input-group" >

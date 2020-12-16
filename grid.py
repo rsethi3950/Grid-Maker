@@ -4,12 +4,10 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 UPLOADED_PHOTOS_DEST = os.path.join(basedir, 'static', 'uploads')
 
 c=1.5
-
 d = dict()
 
-# or fixed size of boxes 48,60,72
-# make function for size
-def makeGrid(gap, color, filename):
+# fixed size of boxes 48,60,72
+def makeGrid(gap, color, filename, stroke):
   dest=os.path.join(UPLOADED_PHOTOS_DEST,filename)
   initimg = Image.open(dest).convert("L")
   initimg = initimg.resize((int(initimg.width*c),int(initimg.height*c)))
@@ -26,12 +24,12 @@ def makeGrid(gap, color, filename):
   x=1
   y=1
   for i in range(0, img.width, gap):
-    drawing.line((i,0,i,img.height),fill=color, width=7)
+    drawing.line((i,0,i,img.height),fill=color, width=stroke)
     drawing.text((i,0),str(y),font=fnt,fill=color)
     y=y+1
   
   for j in range(0, img.height, gap):
-    drawing.line((0,j,img.width,j),fill=color, width=7)
+    drawing.line((0,j,img.width,j),fill=color, width=stroke)
     drawing.text((0,j),str(x),font=fnt,fill=color)
     x=x+1
   img.save(dest)
