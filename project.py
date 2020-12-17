@@ -12,11 +12,12 @@ app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 app.config['MAIL_SERVER']='smtp.gmail.com'
-app.config['MAIL_PORT'] = 465
+app.config['MAIL_PORT'] = 587
 app.config['MAIL_USERNAME'] = 'riyasethi941@gmail.com'
 app.config['MAIL_PASSWORD'] = 'Rssb1234@'
-app.config['MAIL_USE_TLS'] = False
-app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+app.config['MAIL_DEFAULT_SENDER']='riyasethi941@gmail.com'
 
 mail = Mail(app)
 
@@ -47,7 +48,8 @@ def send_email(form_data,filename):
         msg.attach(filename,"image/png",fp.read())
         mail.send(msg)
         print ('Sent')
-# No caching at all for API endpoints.
+
+#No caching at all for API endpoints.
 @app.after_request
 def add_header(response):
     response.headers['X-UA-Compatible'] = 'IE=Edge,chrome=1'
@@ -62,10 +64,8 @@ def display():
 	if(request.method == "POST"):
 		if(reviewform.select.data=="Y"):
 			send_email(request.args.get('email'),request.args.get('dest'))
-			return 'Sent'
+			return 'The mail has been sent. Please do visit again.'
 		return 'Thankyou for visiting!'
-	if(request.args.get('select')=="Y"):
-		send_email(request.args.get('email'),request.args.get('dest'))
 	return render_template('result.html', email=request.args.get('email'), dest=request.args.get('dest'), select=request.args.get('select'), reviewform=reviewform)
 
 @app.route('/', methods=["POST","GET"])
