@@ -7,10 +7,12 @@ dominate==2.6.0
 email-validator==1.1.2
 Flask==1.1.2
 Flask-Bootstrap==3.3.7.1
+Flask-Colorpicker==0.9
 Flask-Mail==0.9.1
 Flask-Uploads==0.2.1
 Flask-WTF==0.14.3
 freeze==3.0
+gunicorn==20.0.4
 idna==2.10
 infinity==1.5
 intervals==0.9.0
