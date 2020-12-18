@@ -74,6 +74,7 @@ def upload():
 
 @app.route('/uploader', methods=["POST","GET"])
 def upload_file():
+	
 	form=ContactForm()
 	
 	if request.method == 'POST':
