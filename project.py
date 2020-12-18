@@ -12,12 +12,12 @@ app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 app.config['MAIL_SERVER']='smtp.gmail.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USERNAME'] = 'riyasethi941@gmail.com'
-app.config['MAIL_PASSWORD'] = 'Rssb1234@'
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USE_SSL'] = False
-app.config['MAIL_DEFAULT_SENDER']='riyasethi941@gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'hh5094266@gmail.com'
+app.config['MAIL_PASSWORD'] = 'Hhacker@1234'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_DEFAULT_SENDER']='hh5094266@gmail.com'
 
 mail = Mail(app)
 
@@ -42,7 +42,7 @@ class ReviewForm(FlaskForm):
 	submit = SubmitField("Send")
 
 def send_email(form_data,filename):
-    msg= Message('Hello', sender = 'riyasethi941@gmail.com', recipients = [form_data])
+    msg= Message('Hello', sender = 'hh5094266@gmail.com', recipients = [form_data])
     msg.body= 'Final Image. PFA'
     with app.open_resource(os.path.join(UPLOADED_PHOTOS_DEST,filename)) as fp:
         msg.attach(filename,"image/png",fp.read())
