@@ -21,7 +21,6 @@ app.config['MAIL_DEFAULT_SENDER']='hh5094266@gmail.com'
 
 mail = Mail(app)
 
-
 app.secret_key = 'development key'
 basedir = os.path.abspath(os.path.dirname(__file__))
 UPLOADED_PHOTOS_DEST = os.path.join(basedir, 'static', 'uploads')

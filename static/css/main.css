@@ -339,19 +339,15 @@ input {
   cursor: pointer;
 }
 
-
 .form-input-group {
   position: relative;
   margin-bottom: 33px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* .formField:focus {
-  box-shadow: 0 0 5px rgba(81, 203, 238, 1);
-  padding: 3px 0px 3px 3px;
-  margin: 5px 1px 3px 0px;
-  border: 1px solid rgba(81, 203, 238, 1);
-} */
+.formField:focus {
+  box-shadow: 0 0 10px rgb(65, 210, 235);
+}
 
 .input--style-3 {
   padding: 5px 0;
