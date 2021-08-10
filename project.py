@@ -1,5 +1,5 @@
 from flask import Flask, redirect, url_for, request, render_template, flash
-from werkzeug import secure_filename
+from werkzeug.utils import secure_filename
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileRequired, FileField, FileAllowed
 from wtforms import TextField, SubmitField, SelectField, StringField, FloatField, RadioField, validators, ValidationError
@@ -14,7 +14,7 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.config['MAIL_SERVER']='smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USERNAME'] = 'hh5094266@gmail.com'
-app.config['MAIL_PASSWORD'] = 'Hhacker@1234'
+app.config['MAIL_PASSWORD'] = 'Hhacker@12'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_DEFAULT_SENDER']='hh5094266@gmail.com'
@@ -27,7 +27,7 @@ UPLOADED_PHOTOS_DEST = os.path.join(basedir, 'static', 'uploads')
 
 width_choices=[('1','large'),('2', 'medium'),('3', 'small')]
 class ContactForm(FlaskForm):
-	email = TextField("Email:",[validators.Required("Please enter your email address."),validators.Email("Please enter valid email address.")])
+	email = TextField("Email:",[validators.DataRequired("Please enter your email address."),validators.Email("Please enter valid email address.")])
 	photo= FileField('Upload picture:',validators=[FileRequired(), FileAllowed(['jpg', 'png', 'jpeg'], "Only Images are allowed.")])
 	gridWidth= SelectField("grid width:",choices= width_choices)
 	lineWidth= FloatField("Line width:")
