@@ -13,11 +13,11 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 app.config['MAIL_SERVER']='smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = 'hh5094266@gmail.com'
-app.config['MAIL_PASSWORD'] = 'Hhacker@12'
+app.config['MAIL_USERNAME'] = ''
+app.config['MAIL_PASSWORD'] = ''
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_DEFAULT_SENDER']='hh5094266@gmail.com'
+app.config['MAIL_DEFAULT_SENDER']=''
 
 mail = Mail(app)
 
